@@ -22,7 +22,10 @@ public class PlayerMovement : MonoBehaviour
     public PlayerState currentState;
     public Rigidbody2D rb;
     public GameObject camara;
+    public HealthBar healthBar;
 
+    public int maxHealth = 100;
+    public int currentHealth;
     public float moveSpeed = 5f;
     private string currentAnimaton;
 
@@ -31,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        currentHealth = maxHealth;
+        healthBar.setMaxHealth(maxHealth);
         hand = this.gameObject.transform.GetChild(0).gameObject;
         animator = gameObject.GetComponent<Animator>();
         equipment = gameObject.GetComponent<Equipment>();
@@ -55,6 +60,9 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.F))
             equipment.wap.GetComponent<Pickaxe>().p_LeftCollider.enabled = false;
 
+        if(Input.GetKeyDown(KeyCode.Space)){
+            TakeDamage(20);
+        }
         if(Input.GetButtonDown("Fire1") && currentState != PlayerState.Attacking){
             animator.SetFloat("AccionHorizontal", lastMovement.x);
             animator.SetFloat("AccionVertical", lastMovement.y);
@@ -93,6 +101,12 @@ public class PlayerMovement : MonoBehaviour
     void MoveCharacter()
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    void TakeDamage(int damage){
+        currentHealth -= damage;
+
+        healthBar.SetHealth(currentHealth);
     }
 
     public void PlayerFinishAttack(){

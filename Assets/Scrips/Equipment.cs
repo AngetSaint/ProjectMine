@@ -9,7 +9,7 @@ public class Equipment : MonoBehaviour
     const string PICKAXE_MINING = "Mining";
 
     private Inventory inventory;
-    public PlayerMovement player;
+    public Player player;
     public GameObject equippedWeapon;
     public GameObject equippedPickaxe;
     public GameObject wep;

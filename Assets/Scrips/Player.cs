@@ -8,7 +8,7 @@ public enum PlayerState{
     Attacking
 }
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
     //Animation states
     const string PLAYER_IDLE = "Player_Idle";

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum PlayerState{
     Walking,
@@ -10,6 +11,8 @@ public enum PlayerState{
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance{ get; private set;}
+
     //Animation states
     const string PLAYER_IDLE = "Player_Idle";
     const string PLAYER_WALKING = "Movement";
@@ -32,6 +35,10 @@ public class Player : MonoBehaviour
     Vector2 movement;
     public Vector2 lastMovement;
 
+    void Awake()
+    {
+        Instance = this; 
+    }
     void Start()
     {
         currentHealth = maxHealth;
@@ -106,6 +113,9 @@ public class Player : MonoBehaviour
     void TakeDamage(int damage){
         currentHealth -= damage;
 
+        if(currentHealth <= 0)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
         healthBar.SetHealth(currentHealth);
     }
 
@@ -123,6 +133,9 @@ public class Player : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.CompareTag("Enemy")){
+            TakeDamage(other.gameObject.GetComponent<Enemy>().power);
+        }
         if(other.gameObject.CompareTag("Item"))
             other.gameObject.GetComponent<ItemPickup>().Interact();
         if(other.gameObject.CompareTag("Travel")){

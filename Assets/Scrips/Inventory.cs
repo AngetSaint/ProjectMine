@@ -25,10 +25,10 @@ public class Inventory : MonoBehaviour
 
     public List<Item> items = new List<Item>();
 
-    public List<GameObject> Weapons;
+    public List<GameObject> weapons;
     private GameObject allWeapons;
 
-    public List<GameObject> Pickaxes;
+    public List<GameObject> pickaxes;
     private GameObject allPickaxes;
 
     void Start() {
@@ -67,10 +67,10 @@ public class Inventory : MonoBehaviour
     }
 
     void AddWeapon(GameObject weapon){
-        Weapons.Add(weapon);
+        weapons.Add(weapon);
     }
 
     void AddPickaxe(GameObject pickaxe){
-        Pickaxes.Add(pickaxe);
+        pickaxes.Add(pickaxe);
     }
 }

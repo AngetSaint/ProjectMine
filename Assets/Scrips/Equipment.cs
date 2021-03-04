@@ -25,17 +25,17 @@ public class Equipment : MonoBehaviour
         Invoke("EquipStart", 0.1f);
     }
     void EquipStart(){
-        if(inventory.Weapons.Capacity > 0){
+        if(inventory.weapons.Capacity > 0){
             EquipWeapon(1);
         }
-        if(inventory.Pickaxes.Capacity > 0){
+        if(inventory.pickaxes.Capacity > 0){
             EquipPickaxe(1);
         }
     }
 
     public void EquipWeapon(int step){
-        int capacity = inventory.Weapons.Count;
-        int index = inventory.Weapons.IndexOf(equippedWeapon);
+        int capacity = inventory.weapons.Count;
+        int index = inventory.weapons.IndexOf(equippedWeapon);
 
         if(index + step >= capacity){
             index = 0;
@@ -51,12 +51,12 @@ public class Equipment : MonoBehaviour
             Destroy(wep);
         }*/
 
-        equippedWeapon = inventory.Weapons[index];
+        equippedWeapon = inventory.weapons[index];
     }
 
     public void EquipPickaxe(int step){
-        int capacity = inventory.Pickaxes.Count;
-        int index = inventory.Pickaxes.IndexOf(equippedPickaxe);
+        int capacity = inventory.pickaxes.Count;
+        int index = inventory.pickaxes.IndexOf(equippedPickaxe);
 
         if(index + step >= capacity){
             index = 0;
@@ -72,7 +72,7 @@ public class Equipment : MonoBehaviour
             Destroy(wep);
         }*/
 
-        equippedPickaxe = inventory.Pickaxes[index];
+        equippedPickaxe = inventory.pickaxes[index];
         //UI_Image.sprite = wep.GetComponent<SpriteRenderer>().sprite;
     }
 

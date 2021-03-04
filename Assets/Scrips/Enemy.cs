@@ -29,6 +29,12 @@ public class Enemy : MonoBehaviour
         healthBar.SetHealth(currentHealth);
     }
 
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.gameObject.CompareTag("Player")){
+            other.gameObject.GetComponent<Player>().TakeDamage(power);
+        }
+    }
+
     public void MakeLoot(){
         if(thisLoot != null){
             ItemProperty current = thisLoot.LootItem();

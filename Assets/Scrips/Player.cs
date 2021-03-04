@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
     public float moveSpeed = 5f;
+    public float timerInmune;
+    public bool inmune;
     private string currentAnimaton;
 
     Vector2 movement;
@@ -38,6 +40,8 @@ public class Player : MonoBehaviour
     void Awake()
     {
         Instance = this; 
+        inmune = false;
+        timerInmune = 0;
     }
     void Start()
     {
@@ -51,6 +55,13 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+        if(timerInmune > 0)
+            timerInmune -= Time.deltaTime;
+         if(timerInmune <= 0)
+         {
+             inmune = false;
+         }
+
         if(EventSystem.current.IsPointerOverGameObject())
             return;
 
@@ -64,12 +75,6 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Q))
             equipment.EquipWeapon(-1);
 
-        if(Input.GetKeyDown(KeyCode.F))
-            equipment.wap.GetComponent<Pickaxe>().p_LeftCollider.enabled = false;
-
-        if(Input.GetKeyDown(KeyCode.Space)){
-            TakeDamage(20);
-        }
         if(Input.GetButtonDown("Fire1") && currentState != PlayerState.Attacking){
             animator.SetFloat("AccionHorizontal", lastMovement.x);
             animator.SetFloat("AccionVertical", lastMovement.y);
@@ -110,7 +115,12 @@ public class Player : MonoBehaviour
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
-    void TakeDamage(int damage){
+    public void TakeDamage(int damage){
+        if(inmune  == true)
+            return;
+
+        inmune = true;
+        timerInmune = 2f;
         currentHealth -= damage;
 
         if(currentHealth <= 0)
@@ -132,17 +142,13 @@ public class Player : MonoBehaviour
         else equipment.wep.GetComponent<Pickaxe>().p_MiddleCollider.enabled = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.CompareTag("Enemy")){
-            TakeDamage(other.gameObject.GetComponent<Enemy>().power);
-        }
+    private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.CompareTag("Item"))
             other.gameObject.GetComponent<ItemPickup>().Interact();
         if(other.gameObject.CompareTag("Travel")){
             gameObject.transform.position = other.gameObject.GetComponent<TravelPoint>().playerPos.position;
-            camara.transform.position = other.gameObject.GetComponent<TravelPoint>().cameraPos.position;
+            //camara.transform.position = other.gameObject.GetComponent<TravelPoint>().cameraPos.position;
         }
-
     }
 
     void ChangeAnimationState(string newAnimation)

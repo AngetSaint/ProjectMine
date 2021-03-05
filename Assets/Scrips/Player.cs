@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public GameObject camara;
     public HealthBar healthBar;
+    public Joystick joystick;
 
     public int maxHealth = 100;
     public int currentHealth;
@@ -62,11 +63,19 @@ public class Player : MonoBehaviour
              inmune = false;
          }
 
-        if(EventSystem.current.IsPointerOverGameObject())
-            return;
+        /*if(EventSystem.current.IsPointerOverGameObject())
+            return;*/
 
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        if(joystick.Horizontal >= .2f)
+            movement.x = 1;
+        else if(joystick.Horizontal <= -.2f)
+            movement.x = -1;
+        else movement.x = 0;
+        if(joystick.Vertical >= .2f)
+            movement.y = 1;
+        else if(joystick.Vertical <= -.2f)
+        movement.y = -1;
+        else movement.y = 0;
         if(movement.x != 0 || movement.y != 0)
             lastMovement = new Vector2(movement.x, movement.y);
 
@@ -75,13 +84,13 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Q))
             equipment.EquipWeapon(-1);
 
-        if(Input.GetButtonDown("Fire1") && currentState != PlayerState.Attacking){
+        /*if(Input.GetButtonDown("Fire1") && currentState != PlayerState.Attacking){
             animator.SetFloat("AccionHorizontal", lastMovement.x);
             animator.SetFloat("AccionVertical", lastMovement.y);
             currentState = PlayerState.Attacking;
             if(lastMovement.x == 0 && lastMovement.y == 1)
                 hand.GetComponent<SpriteRenderer>().sortingLayerName = "BelowCharacter";
-            equipment.AtackWithEquippedWeapon();
+            PlayerAttack();
             ChangeAnimationState(PLAYER_ATTACK);
             Invoke("PlayerFinishAttack", 0.3333333f); //animator.GetCurrentAnimatorStateInfo(0).length
         }else if(Input.GetButtonDown("Fire2") && currentState != PlayerState.Attacking){
@@ -90,11 +99,12 @@ public class Player : MonoBehaviour
             currentState = PlayerState.Attacking;
             if(lastMovement.x == 0 && lastMovement.y == 1)
                 hand.GetComponent<SpriteRenderer>().sortingLayerName = "BelowCharacter";
-            equipment.MineWithEquippedWeapon();
+            PlayerMine();
             ChangeAnimationState(PLAYER_MINING);
             Invoke("PlayerFinishAttack", 0.3333333f);
             Invoke("PickaxeColliderOn", 0.3f);
-        }else UpdateAnimationsAndMove();
+        }else UpdateAnimationsAndMove();*/
+        UpdateAnimationsAndMove();
     }
 
     void UpdateAnimationsAndMove(){    
@@ -105,8 +115,9 @@ public class Player : MonoBehaviour
         
         if(movement.sqrMagnitude > 0 && currentState == PlayerState.Walking)
             ChangeAnimationState(PLAYER_WALKING);
-        else if(movement.sqrMagnitude == 0 && currentState == PlayerState.Walking)
+        else if(movement.sqrMagnitude == 0 && currentState == PlayerState.Walking){
             ChangeAnimationState(PLAYER_IDLE);
+        }
         MoveCharacter();
     }
 
@@ -129,6 +140,27 @@ public class Player : MonoBehaviour
         healthBar.SetHealth(currentHealth);
     }
 
+    public void PlayerMine(){
+        animator.SetFloat("AccionHorizontal", lastMovement.x);
+        animator.SetFloat("AccionVertical", lastMovement.y);
+        currentState = PlayerState.Attacking;
+        if(lastMovement.x == 0 && lastMovement.y == 1)
+            hand.GetComponent<SpriteRenderer>().sortingLayerName = "BelowCharacter";
+        equipment.MineWithEquippedWeapon();
+        ChangeAnimationState(PLAYER_MINING);
+        Invoke("PlayerFinishAttack", 0.3333333f);
+        Invoke("PickaxeColliderOn", 0.3f);
+    }
+    public void PlayerAttack(){
+        animator.SetFloat("AccionHorizontal", lastMovement.x);
+            animator.SetFloat("AccionVertical", lastMovement.y);
+            currentState = PlayerState.Attacking;
+            if(lastMovement.x == 0 && lastMovement.y == 1)
+                hand.GetComponent<SpriteRenderer>().sortingLayerName = "BelowCharacter";
+            equipment.AtackWithEquippedWeapon();
+            ChangeAnimationState(PLAYER_ATTACK);
+            Invoke("PlayerFinishAttack", 0.3333333f);
+    }
     public void PlayerFinishAttack(){
         currentState = PlayerState.Walking;
         equipment.DestroyEquippedWeapon();

@@ -9,6 +9,7 @@ public class Pickaxe : MonoBehaviour
     public Collider2D p_MiddleCollider;
 
     private void OnTriggerEnter2D(Collider2D other) {
+        Debug.Log("Trigger");
         if(other.gameObject.CompareTag("Rock")){
             other.gameObject.GetComponent<RockCave>().MakeLoot();
             Destroy(other.gameObject);

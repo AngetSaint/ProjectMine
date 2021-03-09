@@ -9,6 +9,7 @@ TagManager:
   - Rock
   - Item
   - Travel
+  - Animated
   layers:
   - Default
   - TransparentFX
@@ -49,7 +50,7 @@ TagManager:
   - name: BelowCharacter
     uniqueID: 503736719
     locked: 0
-  - name: CharacterLayer
+  - name: Objects
     uniqueID: 2034373573
     locked: 0
   - name: AboveCharacter

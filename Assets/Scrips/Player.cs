@@ -177,9 +177,11 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.CompareTag("Item"))
             other.gameObject.GetComponent<ItemPickup>().Interact();
-        if(other.gameObject.CompareTag("Travel")){
-            gameObject.transform.position = other.gameObject.GetComponent<TravelPoint>().playerPos.position;
-            //camara.transform.position = other.gameObject.GetComponent<TravelPoint>().cameraPos.position;
+        if(other.gameObject.CompareTag("Travel"))
+            other.gameObject.GetComponent<TravelPoint>().TravelToPoint();
+        if(other.gameObject.CompareTag("TravelExit")){
+            other.gameObject.GetComponent<TravelPoint>().TravelToPoint();
+            Inventory.instance.AddEachInventoryItem();
         }
     }
 

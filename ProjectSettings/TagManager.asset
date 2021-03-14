@@ -10,6 +10,7 @@ TagManager:
   - Item
   - Travel
   - Animated
+  - TravelExit
   layers:
   - Default
   - TransparentFX

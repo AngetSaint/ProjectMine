@@ -25,6 +25,10 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    public void CallInventory(){
+        inventoryUI.SetActive(!inventoryUI.activeSelf);
+    }
+
     void UpdateUI(){
         for(int i = 0; i < slots.Length; i++){
             if(i < inventory.items.Count){

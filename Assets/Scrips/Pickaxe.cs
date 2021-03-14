@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Pickaxe : MonoBehaviour
 {
+    public int power;
+
     public Collider2D p_LeftCollider;
     public Collider2D p_RightCollider;
     public Collider2D p_MiddleCollider;
@@ -11,8 +13,7 @@ public class Pickaxe : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         Debug.Log("Trigger");
         if(other.gameObject.CompareTag("Rock")){
-            other.gameObject.GetComponent<RockCave>().MakeLoot();
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<RockCave>().DestroyRock(power);
         }
     }
 }

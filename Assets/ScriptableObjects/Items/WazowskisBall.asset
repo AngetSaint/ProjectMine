@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbe010f5bebc1345a8014e6fef59667, type: 3}
   m_Name: WazowskisBall
   m_EditorClassIdentifier: 
+  collectionID: 0
+  itemID: 4
   name: Wazowski Ball
   icon: {fileID: 21300000, guid: 76e3a34867a80b0408c96c2875ee6d35, type: 3}
   isDefaultItem: 0

@@ -5,5 +5,8 @@ using UnityEngine;
 public class TravelPoint : MonoBehaviour
 {
     public Transform playerPos;
-    public Transform cameraPos;
+
+    public void TravelToPoint(){
+        Player.Instance.gameObject.transform.position = playerPos.transform.position;
+    }
 }

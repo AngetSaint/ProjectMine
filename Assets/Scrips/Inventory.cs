@@ -25,6 +25,8 @@ public class Inventory : MonoBehaviour
 
     public List<Item> items = new List<Item>();
 
+    //public List<Item> collections = new List<Item>();
+
     public List<GameObject> weapons;
     private GameObject allWeapons;
 
@@ -63,7 +65,21 @@ public class Inventory : MonoBehaviour
         items.Remove(item);
 
         if(onItemChangedCallback != null)
-                onItemChangedCallback.Invoke();
+            onItemChangedCallback.Invoke();
+    }
+    public void RemoveAllItems(){
+        items.Clear();
+
+        if(onItemChangedCallback != null)
+            onItemChangedCallback.Invoke();
+    }
+
+    public void AddEachInventoryItem(){
+        foreach(Item item in items){
+            CollectionsDatabase.instance.AddItemToCollection(item.itemID);
+        }
+        RemoveAllItems();
+        Debug.Log(CollectionsDatabase.instance.collection[0].amount);
     }
 
     void AddWeapon(GameObject weapon){
